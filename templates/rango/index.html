@@ -13,14 +13,27 @@
 		{% if categories %}
 			<ul>
 				{% for category in categories %}
-				<li><a
-						href="/rango/category/{{ category.slug }}">{{category.name }}
+				<li><a href="/rango/category/{{ category.slug }}">{{category.name }}
 				</a></li>
 				{% endfor %}
 			</ul>
 		{% else %}
 			<strong>There are no categories present.</strong>
 		{% endif %}
+
+		<h1>Top 5 viewed pages</h1>
+		{% if top_pages %}
+			<ol>
+				{% for page in top_pages %}
+					<li><a href="{{ page.url }}">{{ page.title }}</a></li>
+				{% endfor %}
+			</ol>
+		{% else %}
+			<strong>Error retrieving top 5 pages</strong>
+		{% endif %}
+
+		<h1>Add a category</h1>
+		<a href="/rango/add_category">Add a New Category</a><br /><br />
 
 		<a href="/rango/about">About</a>
 	</body>
