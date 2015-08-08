@@ -3,6 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+
+from datetime import datetime
 # Import the Category model
 from rango.models import Category, Page, UserProfile
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
@@ -20,8 +22,37 @@ def index(request):
     pages = Page.objects.order_by('-views')[:5]
     context_dict['top_pages'] = pages
 
-    # Render the response and send it back!
-    return render(request, 'rango/index.html', context_dict)
+    # Visits counter
+    visits = request.session.get('visits')
+    if not visits:
+        visits = 1
+    reset_last_visit_time = False
+
+    # Does the cookie last_visit exist?
+    last_visit = request.session.get('last_visit')
+    if last_visit:
+        # Cast the value to a Python date/time object
+        last_visit_time = datetime.strptime(last_visit[:-7], '%Y-%m-%d %H:%M:%S')
+
+        # if it's been more than a day since the last visit
+        if (datetime.now() - last_visit_time).days > 0:
+            visits += 1
+            # .. and flag that the cookie last visit needs to be updated
+            reset_last_visit_time = True
+    else:
+        # Cookie last_visit doesn't exist, so flag that it should be set
+        reset_last_visit_time = True
+
+    if reset_last_visit_time:
+        request.session['last_visit'] = str(datetime.now())
+        request.session['visits'] = visits
+    context_dict['visits'] = visits
+
+    # Render the page
+    response = render(request, 'rango/index.html', context_dict)
+
+    # Return response back to the user, updating any cookies that need changed
+    return response
 
 
 def about(request):
