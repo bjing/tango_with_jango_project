@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 
-{% load static %} <!-- New line -->
+{% extends 'rango/base.html' %}
 
-<html>
+{% load staticfiles %}
 
-	<head>
-		<title>Rango</title>
-	</head>
-	
-	<body>
-		<h1>About...</h1>
-		
-		This is a mightybum production.<br /><br />
-		<strong>{{ boldmessage }}</strong><br /><br />
-		<a href="/rango/">Home</a><br /><br />
-		<img src="{% static "lotr.png" %}" alt="Picture of Lord of the Rings!" /> <!-- New line -->
-	</body>
-</html>
+{% block title %}About{% endblock %}
+
+{% block body_block %}
+
+    This is a mightybum production.<br /><br />
+    <strong>{{ boldmessage }}</strong><br /><br />
+    <img src="{% static 'lotr.png' %}" alt="Picture of Lord of the Rings!" />
+
+{% endblock %}

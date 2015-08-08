@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 
-{% load static %} <!-- New line -->
+{% extends 'rango/base.html' %}
 
-<html>
+{% load staticfiles %}
 
-	<head>
-		<title>Rango</title>
-	</head>
-
-	<body>
-        {% if user.is_authenticated %}
+{% block body_block %}
+	{% if user.is_authenticated %}
         <h1>Rango says... hello {{ user.username }}!</h1>
         {% else %}
         <h1>Rango says... hello world!</h1>
@@ -17,7 +13,7 @@
 		{% if categories %}
 			<ul>
 				{% for category in categories %}
-				<li><a href="/rango/category/{{ category.slug }}">{{category.name }}
+                <li><a href="{% url 'category' category.slug %}">{{category.name }}
 				</a></li>
 				{% endfor %}
 			</ul>
@@ -35,20 +31,4 @@
 		{% else %}
 			<strong>Error retrieving top 5 pages</strong>
 		{% endif %}
-
-		<h1>Add a category</h1>
-		<a href="/rango/add_category">Add a New Category</a><br /><br />
-
-        <h1>User Management</h1>
-        {% if user.is_authenticated %}
-            <a href="/rango/restricted/">Restricted Page</a><br />
-            <a href="/rango/logout/">Logout</a><br />
-        {% else %}
-            <a href="/rango/register/">Register Here</a><br />
-            <a href="/rango/login/">Login</a><br />
-        {% endif %}
-        <br /><br />
-
-		<a href="/rango/about">About</a>
-	</body>
-</html>
+{% endblock %}
