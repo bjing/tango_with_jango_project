@@ -11,4 +11,5 @@ urlpatterns = patterns('',
         name='add_page'),
     url(r'^restricted/', views.restricted, name='restricted'),
     #url(r'^static/$', views.static, name='static'),
+    url(r'^search/$', views.search, name='search'),
 )
